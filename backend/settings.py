@@ -34,12 +34,13 @@ INSTALLED_APPS = [
     'accounts',
     'patients',
     'predictions',
-    'backend',
+    'backend',  # main app
 ]
 
 # Middleware
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # <- serve static files in production
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -54,7 +55,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates'],  # project templates
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -69,10 +70,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-# Database: use DATABASE_URL if provided, else fallback to local
+# Database
 DATABASES = {
     'default': dj_database_url.parse(
-        os.getenv("DATABASE_URL", f"postgresql://{os.getenv('DB_USER','postgres')}:{os.getenv('DB_PASSWORD','password123')}@{os.getenv('DB_HOST','localhost')}:{os.getenv('DB_PORT','5432')}/{os.getenv('DB_NAME','hospital_readmission')}")
+        os.getenv(
+            "DATABASE_URL",
+            f"postgresql://{os.getenv('DB_USER','postgres')}:"
+            f"{os.getenv('DB_PASSWORD','password123')}@"
+            f"{os.getenv('DB_HOST','localhost')}:"
+            f"{os.getenv('DB_PORT','5432')}/"
+            f"{os.getenv('DB_NAME','hospital_readmission')}"
+        )
     )
 }
 
@@ -92,10 +100,11 @@ USE_TZ = True
 
 # Static files
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']  # for development
-STATIC_ROOT = BASE_DIR / 'staticfiles'    # for Render and Railway
+STATICFILES_DIRS = [BASE_DIR / 'static']  # local development
+STATIC_ROOT = BASE_DIR / 'staticfiles'    # production (Railway/Render)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# Default PK
+# Default primary key
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom user model
