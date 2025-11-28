@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import dj_database_url
 
 # Load environment variables
 load_dotenv()
@@ -53,7 +54,7 @@ ROOT_URLCONF = 'backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],  # You said templates live here
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,16 +69,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
-# Database (uses local or Render/Railway depending on .env)
+# Database: use DATABASE_URL if provided, else fallback to local
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv("DB_NAME", "hospital_readmission"),
-        'USER': os.getenv("DB_USER", "postgres"),
-        'PASSWORD': os.getenv("DB_PASSWORD", "password123"),
-        'HOST': os.getenv("DB_HOST", "localhost"),
-        'PORT': os.getenv("DB_PORT", "5432"),
-    }
+    'default': dj_database_url.parse(
+        os.getenv("DATABASE_URL", f"postgresql://{os.getenv('DB_USER','postgres')}:{os.getenv('DB_PASSWORD','password123')}@{os.getenv('DB_HOST','localhost')}:{os.getenv('DB_PORT','5432')}/{os.getenv('DB_NAME','hospital_readmission')}")
+    )
 }
 
 # Password validation
@@ -96,8 +92,8 @@ USE_TZ = True
 
 # Static files
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']   # for development
-STATIC_ROOT = BASE_DIR / 'staticfiles'     # for Render and Railway
+STATICFILES_DIRS = [BASE_DIR / 'static']  # for development
+STATIC_ROOT = BASE_DIR / 'staticfiles'    # for Render and Railway
 
 # Default PK
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
