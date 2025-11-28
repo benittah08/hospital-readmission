@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login - MedRevisit</title>
+
+  <!-- Ionicons (used ONLY in left content section) -->
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+
+<body>
+
+<header class="header">
+  <div class="container">
+      <div class="logo">
+          <ion-icon name="medkit-outline" class="logo-icon"></ion-icon>
+          <h1>MedRevisit</h1>
+      </div>
+
+      <nav class="navbar">
+       <ul class="nav-links">
+        <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+        <li><a href="{% url 'register' %}" class="nav-link {% if request.path == '/register/' %}active{% endif %}">Register</a></li>
+      </ul>
+     </nav>
+
+  </div>
+</header>
+
+<section class="auth-hero">
+  <div class="auth-container container">
+
+    <!-- LEFT SIDE -->
+    <aside class="auth-content" aria-label="features">
+      <h2>Welcome Back</h2>
+      <p>Access your hospital readmission system</p>
+
+      <ul class="auth-features">
+        <li>
+          <ion-icon name="shield-checkmark-outline"></ion-icon>
+          Secure medical data access
+        </li>
+        <li>
+          <ion-icon name="pulse-outline"></ion-icon>
+          Real time patient monitoring
+        </li>
+        <li>
+          <ion-icon name="analytics-outline"></ion-icon>
+          Predictive readmission insights
+        </li>
+      </ul>
+    </aside>
+
+    <!-- RIGHT CARD -->
+    <main class="auth-card" aria-labelledby="login-heading">
+
+      <header class="auth-header">
+        <h2 id="login-heading">Login</h2>
+        <p>Enter your credentials to continue</p>
+      </header>
+
+      <form class="auth-form" id="loginForm" method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        <!-- Email -->
+        <div class="form-group">
+          <label for="identifier">Email or Username</label>
+          <input id="identifier" name="identifier" type="text" required autocomplete="username">
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" required autocomplete="current-password">
+        </div>
+
+        <!-- Show Password + Forgot -->
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" id="showPassword">
+            <span class="checkmark"></span>
+            Show password
+          </label>
+
+          <a class="forgot-link" href="forgot-password.html">Forgot password</a>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn-full">Sign in</button>
+
+        <!-- Footer -->
+       <div class="auth-footer">
+        <p>Do not have an account</p>
+        <a href="{% url 'register' %}">Create a new account</a>
+       </div>
+
+      </form>
+    </main>
+
+  </div>
+</section>
+
+<script src="{% static 'js/register.js' %}"></script>
+
+</body>
+</html>

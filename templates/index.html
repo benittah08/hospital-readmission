@@ -1,0 +1,337 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Readmission Prediction System</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Ions Icons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+    <!-- Navigation Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <ion-icon name="medkit-outline" class="logo-icon"></ion-icon>
+                <h1>MedRevisit</h1>
+            </div>
+            <nav class="navbar">
+                <ul class="nav-links">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#system-architecture" class="nav-link">System Architecture</a></li>
+                    <li><a href="#core-components" class="nav-link">Core System Components</a></li>
+                    <li><a href="#system-workflow" class="nav-link">System Workflow</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="{% url 'login' %}" class="nav-link">Clinical Staff</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Section -->
+    <section id="home" class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Predicting Hospital Readmissions with AI</h2>
+                <p>An intelligent system that identifies patients at high risk of readmission, enabling proactive care and better patient outcomes.</p>
+                <div class="hero-buttons">
+                    <a href="{% url 'login' %}" class="btn btn-primary">Login to Continue</a>
+                    <a href="#system-architecture" class="btn btn-secondary">
+                        <ion-icon name="book-outline"></ion-icon>
+                        Learn More
+                    </a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="placeholder-image">
+                    <ion-icon name="bar-chart-outline" class="hero-main-icon"></ion-icon>
+                    <span>Healthcare Analytics Visualization</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <h2>System Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <ion-icon name="analytics-outline"></ion-icon>
+                    </div>
+                    <h3>Risk Prediction</h3>
+                    <p>Advanced algorithms predict patient readmission risk based on medical history and clinical data.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <ion-icon name="people-outline"></ion-icon>
+                    </div>
+                    <h3>Patient Management</h3>
+                    <p>Comprehensive patient profiles with medical history, medications, and treatment plans.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <ion-icon name="stats-chart-outline"></ion-icon>
+                    </div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Visualize readmission trends and hospital performance metrics with interactive charts.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <ion-icon name="notifications-outline"></ion-icon>
+                    </div>
+                    <h3>Alert System</h3>
+                    <p>Receive notifications for high-risk patients requiring immediate attention.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Objectives -->
+    <section class="objectives">
+        <div class="container">
+            <h2>System Objectives</h2>
+            <div class="objectives-list">
+                <div class="objective-item">
+                    <span class="objective-number">1</span>
+                    <p>Identify demographic, clinical and socio-economic characteristics of patients</p>
+                </div>
+                <div class="objective-item">
+                    <span class="objective-number">2</span>
+                    <p>Determine the most common diagnosis associated with readmission</p>
+                </div>
+                <div class="objective-item">
+                    <span class="objective-number">3</span>
+                    <p>Assess the impact of discharge planning on readmission rates</p>
+                </div>
+                <div class="objective-item">
+                    <span class="objective-number">4</span>
+                    <p>Develop predictive models for 30-day readmissions</p>
+                </div>
+                <div class="objective-item">
+                    <span class="objective-number">5</span>
+                    <p>Evaluate relationship between length of stay and readmission likelihood</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Architecture Section -->
+    <section id="system-architecture" class="system-architecture">
+        <div class="container">
+            <h2>System Architecture</h2>
+            <div class="architecture-grid">
+                <div class="architecture-item">
+                    <div class="architecture-icon">
+                        <ion-icon name="layers-outline"></ion-icon>
+                    </div>
+                    <h3>Three-Tier Architecture</h3>
+                    <p>Presentation, Application, and Data layers working seamlessly to deliver robust performance.</p>
+                    <ul class="architecture-features">
+                        <li>Presentation Layer: HTML5, CSS3, JavaScript</li>
+                        <li>Application Layer: Django, REST APIs</li>
+                        <li>Data Layer: PostgreSQL, ML Models</li>
+                        <li>Real-time data processing</li>
+                    </ul>
+                </div>
+                <div class="architecture-item">
+                    <div class="architecture-icon">
+                        <ion-icon name="shield-checkmark-outline"></ion-icon>
+                    </div>
+                    <h3>Secure Data Handling</h3>
+                    <p>HIPAA-compliant data encryption and secure patient information management.</p>
+                    <ul class="architecture-features">
+                        <li>End-to-end encryption</li>
+                        <li>Role-based access control</li>
+                        <li>Secure authentication</li>
+                        <li>Audit logging</li>
+                    </ul>
+                </div>
+                <div class="architecture-item">
+                    <div class="architecture-icon">
+                        <ion-icon name="sync-outline"></ion-icon>
+                    </div>
+                    <h3>Real-time Processing</h3>
+                    <p>Live data processing and instant risk score calculations for timely interventions.</p>
+                    <ul class="architecture-features">
+                        <li>Real-time risk scoring</li>
+                        <li>Live dashboard updates</li>
+                        <li>Instant notifications</li>
+                        <li>Continuous monitoring</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core System Components Section -->
+    <section id="core-components" class="core-components">
+        <div class="container">
+            <h2>Core System Components</h2>
+            <div class="components-grid">
+                <div class="component-card">
+                    <div class="component-header">
+                        <ion-icon name="person-outline" class="component-icon"></ion-icon>
+                        <h3>Patient Management</h3>
+                    </div>
+                    <ul class="component-features">
+                        <li>Comprehensive patient profiles</li>
+                        <li>Medical history tracking</li>
+                        <li>Admission and discharge records</li>
+                        <li>Medication management</li>
+                    </ul>
+                </div>
+                
+                <div class="component-card">
+                    <div class="component-header">
+                        <ion-icon name="analytics-outline" class="component-icon"></ion-icon>
+                        <h3>Risk Prediction Engine</h3>
+                    </div>
+                    <ul class="component-features">
+                        <li>Machine learning algorithms</li>
+                        <li>Real-time risk scoring</li>
+                        <li>Factor analysis</li>
+                        <li>Probability calculations</li>
+                    </ul>
+                </div>
+                
+                <div class="component-card">
+                    <div class="component-header">
+                        <ion-icon name="bar-chart-outline" class="component-icon"></ion-icon>
+                        <h3>Analytics Dashboard</h3>
+                    </div>
+                    <ul class="component-features">
+                        <li>Interactive data visualization</li>
+                        <li>Trend analysis</li>
+                        <li>Performance metrics</li>
+                        <li>Custom reporting</li>
+                    </ul>
+                </div>
+                
+                <div class="component-card">
+                    <div class="component-header">
+                        <ion-icon name="notifications-outline" class="component-icon"></ion-icon>
+                        <h3>Alert System</h3>
+                    </div>
+                    <ul class="component-features">
+                        <li>High-risk patient notifications</li>
+                        <li>Custom alert thresholds</li>
+                        <li>Multi-channel notifications</li>
+                        <li>Escalation procedures</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- System Workflow Section -->
+    <section id="system-workflow" class="workflow">
+        <div class="container">
+            <h2>System Workflow</h2>
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Data Collection</h3>
+                        <p>Gather patient demographic, clinical, and historical data from various hospital systems.</p>
+                    </div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Risk Assessment</h3>
+                        <p>Process data through predictive algorithms to calculate readmission risk scores.</p>
+                    </div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Result Visualization</h3>
+                        <p>Display risk scores and contributing factors through intuitive dashboards.</p>
+                    </div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Intervention Trigger</h3>
+                        <p>Automatically notify care teams about high-risk patients requiring attention.</p>
+                    </div>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Outcome Tracking</h3>
+                        <p>Monitor intervention effectiveness and update prediction models accordingly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2>About MedRevisit</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Our Mission</h3>
+                    <p>MedRevisit is dedicated to reducing hospital readmissions through advanced predictive analytics and proactive care management. 
+                        Our system helps healthcare providers identify at-risk patients and implement timely interventions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>
+                        <ion-icon name="medkit-outline"></ion-icon>
+                        MedRevisit
+                    </h3>
+                    <p>Reducing readmissions through predictive analytics and proactive care management.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li>
+                            <ion-icon name="chevron-forward-outline"></ion-icon>
+                            <a href="#home">Home</a>
+                        </li>
+                        <li>
+                            <ion-icon name="chevron-forward-outline"></ion-icon>
+                            <a href="#system-architecture">System Architecture</a>
+                        </li>
+                        <li>
+                            <ion-icon name="chevron-forward-outline"></ion-icon>
+                            <a href="#about">About</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>
+                        <ion-icon name="mail-outline"></ion-icon>
+                        info@medrevisit.org
+                    </p>
+                    <p>
+                        <ion-icon name="call-outline"></ion-icon>
+                        (+254) 723-4567-890
+                    </p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 MedRevisit - Hospital Readmission Prediction System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/home.js' %}"></script>
+</body>
+</html>

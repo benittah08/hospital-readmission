@@ -1,0 +1,283 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Staff Dashboard - MedRevisit</title>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/clinical-dashboard.css' %}">
+    <style>
+        /* Full-width dashboard fixes */
+        .dashboard-section, .stats-grid, .alerts-container, .patient-list, .actions-grid {
+            max-width: 100%;
+        }
+        #analytics-content, #predictions-results, #models-management {
+            min-height: 400px; /* ensures footer stays at bottom */
+        }
+        .dashboard-header, .tab-content > .container-fluid {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+    </style>
+</head>
+<body class="clinical-dashboard">
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <ion-icon name="medkit-outline" class="logo-icon"></ion-icon>
+                <h1>MedRevisit</h1>
+            </div>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link" onclick="showTab('dashboard')">Dashboard</a></li>
+                    <li><a href="#" class="nav-link" onclick="showTab('predictions')">Predictions</a></li>
+                    <li><a href="#" class="nav-link" onclick="showTab('analytics')">Analytics</a></li>
+                    <li><a href="#" class="nav-link" onclick="showTab('models')">ML Models</a></li>
+                    <li><a href="{% url 'logout' %}" class="nav-link">Logout</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="dashboard-header">
+        <div class="container-fluid">
+            <h1>Clinical Staff Dashboard</h1>
+            <p>Monitor patient readmission risks and manage patient care</p>
+        </div>
+    </section>
+
+    <div class="dashboard-tabs">
+        <ul class="nav nav-tabs" id="dashboardTabs">
+            <li class="nav-item">
+                <a class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" href="#dashboard-content">Overview</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="predictions-tab" data-bs-toggle="tab" href="#predictions-content">Predictions</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="analytics-tab" data-bs-toggle="tab" href="#analytics-content">Analytics</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="models-tab" data-bs-toggle="tab" href="#models-content">ML Models</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="tab-content" id="dashboardTabsContent">
+        <!-- Overview Tab -->
+        <div class="tab-pane fade show active" id="dashboard-content" role="tabpanel">
+            <div class="container-fluid">
+                <section class="dashboard-section">
+                    <h2>Patient Risk Overview</h2>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon high-risk"><ion-icon name="warning-outline"></ion-icon></div>
+                            <div class="stat-info">
+                                <h3>High Risk Patients</h3>
+                                <p>Patients with high readmission probability</p>
+                                <button class="btn btn-primary" onclick="filterPatients('high')">View List ({{ high_risk_count }})</button>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon medium-risk"><ion-icon name="alert-circle-outline"></ion-icon></div>
+                            <div class="stat-info">
+                                <h3>Medium Risk Patients</h3>
+                                <p>Patients requiring attention</p>
+                                <button class="btn btn-primary" onclick="filterPatients('medium')">View List ({{ medium_risk_count }})</button>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon total-patients"><ion-icon name="people-outline"></ion-icon></div>
+                            <div class="stat-info">
+                                <h3>All Patients</h3>
+                                <p>Total patients assigned to you</p>
+                                <button class="btn btn-primary" onclick="filterPatients('all')">View All ({{ patients.count }})</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Recent Alerts</h2>
+                        <button class="btn btn-secondary">View All Alerts</button>
+                    </div>
+                    <div class="alerts-container">
+                        {% for alert in alerts %}
+                        <div class="alert-item {% if alert.level == 'high' %}high{% endif %}">
+                            <div class="alert-icon {% if alert.level == 'high' %}high{% endif %}">
+                                <ion-icon name="warning-outline"></ion-icon>
+                            </div>
+                            <div class="alert-content">
+                                <h4>{{ alert.title }}</h4>
+                                <p>{{ alert.message }}</p>
+                                <span class="alert-time">{{ alert.timestamp|date:"M d, Y H:i" }}</span>
+                            </div>
+                            <button class="btn btn-outline">Review</button>
+                        </div>
+                        {% empty %}<p>No alerts at the moment.</p>{% endfor %}
+                    </div>
+                </section>
+
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Your Patients</h2>
+                        <button class="btn btn-secondary" onclick="showTab('predictions')">Run Predictions</button>
+                    </div>
+                    <div class="patient-list" id="patient-list-container">
+                        {% for patient in patients %}
+                        <div class="patient-item" data-risk="{{ patient.risk_category }}">
+                            <div class="patient-info">
+                                <h4>{{ patient.first_name }} {{ patient.last_name }}</h4>
+                                <p>ID: {{ patient.patient_id }} • Age: {{ patient.age }}</p>
+                            </div>
+                            <div class="risk-score {{ patient.risk_category }}">
+                                {{ patient.risk_category|title }} Risk
+                            </div>
+                            <button class="btn btn-outline" onclick="viewPatient({{ patient.id }})">View Profile</button>
+                        </div>
+                        {% empty %}<p>No patients assigned yet.</p>{% endfor %}
+                    </div>
+                </section>
+
+                <section class="dashboard-section">
+                    <h2>Quick Actions</h2>
+                    <div class="actions-grid">
+                        <div class="action-card">
+                            <ion-icon name="search-outline" class="action-icon"></ion-icon>
+                            <h3>Search Patients</h3>
+                            <p>Find patient records by name or ID</p>
+                            <div class="search-box">
+                                <input type="text" id="searchInput" placeholder="Enter patient name or ID...">
+                                <button class="btn btn-primary btn-sm" onclick="searchPatients()">Search</button>
+                            </div>
+                        </div>
+                        <div class="action-card">
+                            <ion-icon name="add-circle-outline" class="action-icon"></ion-icon>
+                            <h3>New Assessment</h3>
+                            <p>Create new readmission risk assessment</p>
+                            <button id="start-assessment" class="btn btn-primary">Start Assessment</button>
+                        </div>
+                        <div class="action-card">
+                            <ion-icon name="bar-chart-outline" class="action-icon"></ion-icon>
+                            <h3>View Analytics</h3>
+                            <p>Readmission trends and reports</p>
+                            <button class="btn btn-primary" onclick="showTab('analytics')">View Reports</button>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Predictions Tab -->
+        <div class="tab-pane fade" id="predictions-content" role="tabpanel">
+            <div class="container-fluid">
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Readmission Predictions</h2>
+                        <button class="btn btn-primary" onclick="runBulkPredictions()">Run Bulk Predictions</button>
+                    </div>
+                    <div class="alert alert-info">
+                        <h5>Active Prediction Model</h5>
+                        <p id="active-model-info">Loading model information...</p>
+                    </div>
+                    <div id="predictions-results">
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading predictions...</span>
+                            </div>
+                            <p class="mt-2">Loading prediction data...</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div class="tab-pane fade" id="analytics-content" role="tabpanel">
+            <div class="container-fluid">
+                <section class="dashboard-section">
+                    <h2>Readmission Analytics</h2>
+                    <div id="analytics-content">
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading analytics...</span>
+                            </div>
+                            <p class="mt-2">Loading analytics data...</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- ML Models Tab -->
+        <div class="tab-pane fade" id="models-content" role="tabpanel">
+            <div class="container-fluid">
+                <section class="dashboard-section">
+                    <div class="section-header">
+                        <h2>Machine Learning Models</h2>
+                        <button class="btn btn-primary" onclick="trainNewModel()">Train New Model</button>
+                    </div>
+                    <div id="models-management">
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading models...</span>
+                            </div>
+                            <p class="mt-2">Loading model management...</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Assessment Modal -->
+    <div id="assessmentModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>New Patient Assessment</h2>
+            <form id="assessmentForm">
+                <label for="patient">Select Patient</label>
+                <select id="patient" name="patient" required>
+                    {% for patient in patients %}
+                    <option value="{{ patient.id }}">{{ patient.first_name }} {{ patient.last_name }}</option>
+                    {% endfor %}
+                </select>
+                <div class="form-row">
+                    <div>
+                        <label for="age">Age</label>
+                        <input type="number" id="age" name="age" min="0" required>
+                    </div>
+                    <div>
+                        <label for="length_of_stay">Length of Stay (days)</label>
+                        <input type="number" id="length_of_stay" name="length_of_stay" min="0" required>
+                    </div>
+                </div>
+                <label for="diagnosis">Primary Diagnosis</label>
+                <input type="text" id="diagnosis" name="diagnosis" placeholder="Enter primary diagnosis" required>
+                <label for="chronic_conditions">Chronic Conditions</label>
+                <input type="text" id="chronic_conditions" name="chronic_conditions" placeholder="e.g., Diabetes, Hypertension">
+                <label for="recent_visits">Number of Recent Admissions (past year)</label>
+                <input type="number" id="recent_visits" name="recent_visits" min="0">
+                <label for="vitals">Vitals</label>
+                <input type="text" id="vitals" name="vitals" placeholder="BP, HR, Temperature, etc.">
+                <label for="discharge_planning">Discharge Planning Notes</label>
+                <textarea id="discharge_planning" name="discharge_planning" placeholder="Enter discharge instructions, follow-up plans, medication reconciliation..."></textarea>
+                <button type="submit" class="btn btn-primary">Submit Assessment</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container-fluid">
+            <p>&copy; 2025 MedRevisit Hospital Readmission System.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/clinical-dashboard.js' %}"></script>
+</body>
+</html>

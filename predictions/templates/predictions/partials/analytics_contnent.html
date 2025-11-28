@@ -1,0 +1,298 @@
+<!-- predictions/templates/predictions/partials/analytics_content.html -->
+<div class="analytics-content">
+    <!-- Analytics Overview Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon high-risk"><ion-icon name="pulse-outline"></ion-icon></div>
+                <div class="stat-info">
+                    <h3 id="readmission-rate">--%</h3>
+                    <p>Readmission Rate</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon medium-risk"><ion-icon name="trending-up-outline"></ion-icon></div>
+                <div class="stat-info">
+                    <h3 id="avg-risk-score">--%</h3>
+                    <p>Average Risk Score</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon total-patients"><ion-icon name="calendar-outline"></ion-icon></div>
+                <div class="stat-info">
+                    <h3 id="avg-stay">-- days</h3>
+                    <p>Avg Length of Stay</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon total-patients"><ion-icon name="people-outline"></ion-icon></div>
+                <div class="stat-info">
+                    <h3 id="total-assessed">--</h3>
+                    <p>Patients Assessed</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row">
+        <!-- Risk Distribution Chart -->
+        <div class="col-md-6">
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h4>Risk Distribution</h4>
+                    <button class="btn btn-outline btn-sm" onclick="refreshCharts()">
+                        <ion-icon name="refresh-outline"></ion-icon> Refresh
+                    </button>
+                </div>
+                <div id="risk-chart" style="height: 300px; background: #f8fafc; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading chart...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Loading risk distribution...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Readmission Trends Chart -->
+        <div class="col-md-6">
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h4>Readmission Trends</h4>
+                    <button class="btn btn-outline btn-sm" onclick="exportAnalytics()">
+                        <ion-icon name="download-outline"></ion-icon> Export
+                    </button>
+                </div>
+                <div id="trends-chart" style="height: 300px; background: #f8fafc; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading chart...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Loading trends data...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detailed Analytics -->
+    <div class="row mt-4">
+        <div class="col-md-8">
+            <div class="dashboard-section">
+                <div class="section-header">
+                    <h4>Top Risk Factors</h4>
+                    <div class="btn-group">
+                        <button class="btn btn-outline btn-sm active" onclick="filterFactors('all')">All</button>
+                        <button class="btn btn-outline btn-sm" onclick="filterFactors('clinical')">Clinical</button>
+                        <button class="btn btn-outline btn-sm" onclick="filterFactors('social')">Social</button>
+                    </div>
+                </div>
+                <div id="risk-factors">
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading factors...</span>
+                        </div>
+                        <p class="mt-2 text-muted">Loading risk factors analysis...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="dashboard-section">
+                <h4>Performance Metrics</h4>
+                <div class="metrics-list">
+                    <div class="metric-item">
+                        <div class="metric-label">Model Accuracy</div>
+                        <div class="metric-value" id="model-accuracy-metric">--%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Precision</div>
+                        <div class="metric-value" id="model-precision">--%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Recall</div>
+                        <div class="metric-value" id="model-recall">--%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">F1 Score</div>
+                        <div class="metric-value" id="model-f1">--%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="dashboard-section mt-3">
+                <h4>Quick Stats</h4>
+                <div class="quick-stats">
+                    <div class="quick-stat">
+                        <ion-icon name="time-outline" class="text-warning"></ion-icon>
+                        <div>
+                            <div class="stat-value" id="avg-prediction-time">--s</div>
+                            <div class="stat-label">Avg Prediction Time</div>
+                        </div>
+                    </div>
+                    <div class="quick-stat">
+                        <ion-icon name="shield-checkmark-outline" class="text-success"></ion-icon>
+                        <div>
+                            <div class="stat-value" id="success-rate">--%</div>
+                            <div class="stat-label">Success Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monthly Report -->
+    <div class="dashboard-section mt-4">
+        <div class="section-header">
+            <h4>Monthly Readmission Report</h4>
+            <div>
+                <select id="report-month" class="form-select d-inline-block w-auto" onchange="loadMonthlyReport()">
+                    <option value="current">Current Month</option>
+                    <option value="last">Last Month</option>
+                    <option value="last3">Last 3 Months</option>
+                </select>
+            </div>
+        </div>
+        <div id="monthly-report">
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading report...</span>
+                </div>
+                <p class="mt-2 text-muted">Generating monthly report...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.metrics-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.metric-item {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    padding: 0.75rem;
+    background: #f8fafc;
+    border-radius: 8px;
+}
+
+.metric-label {
+    flex: 1;
+    font-weight: 500;
+    color: #64748b;
+}
+
+.metric-value {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 1.1rem;
+}
+
+.quick-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.quick-stat {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #f8fafc;
+    border-radius: 8px;
+}
+
+.quick-stat ion-icon {
+    font-size: 1.5rem;
+}
+
+.stat-value {
+    font-weight: 600;
+    font-size: 1.25rem;
+    color: #1e293b;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #64748b;
+}
+
+.risk-factor-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border-left: 4px solid #2563eb;
+}
+
+.risk-factor-item.high {
+    border-left-color: #dc2626;
+}
+
+.risk-factor-item.medium {
+    border-left-color: #d97706;
+}
+
+.factor-name {
+    font-weight: 500;
+    color: #1e293b;
+}
+
+.factor-impact {
+    font-weight: 600;
+    color: #64748b;
+}
+
+.report-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.report-header {
+    display: flex;
+    justify-content: between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.report-title {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.report-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2563eb;
+}
+
+.report-value.positive {
+    color: #059669;
+}
+
+.report-value.negative {
+    color: #dc2626;
+}
+</style>

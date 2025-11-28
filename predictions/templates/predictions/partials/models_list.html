@@ -1,0 +1,55 @@
+<!-- predictions/templates/predictions/partials/models_list.html -->
+<div class="models-content">
+    <div class="dashboard-section">
+        <div class="section-header">
+            <h4>Machine Learning Models</h4>
+            <div>
+                <button class="btn btn-secondary me-2" onclick="refreshModels()">
+                    <ion-icon name="refresh-outline"></ion-icon> Refresh
+                </button>
+                <button class="btn btn-primary" onclick="showTrainModelModal()">
+                    <ion-icon name="add-outline"></ion-icon> Train New Model
+                </button>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon total-patients"><ion-icon name="layers-outline"></ion-icon></div>
+                    <div class="stat-info">
+                        <h3 id="total-models">0</h3>
+                        <p>Total Models</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon medium-risk"><ion-icon name="checkmark-circle-outline"></ion-icon></div>
+                    <div class="stat-info">
+                        <h3 id="active-models">0</h3>
+                        <p>Active Models</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stat-card">
+                    <div class="stat-icon total-patients"><ion-icon name="trending-up-outline"></ion-icon></div>
+                    <div class="stat-info">
+                        <h3 id="avg-accuracy">0%</h3>
+                        <p>Avg Accuracy</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="models-table">
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading models...</span>
+                </div>
+                <p class="mt-2">Loading model data...</p>
+            </div>
+        </div>
+    </div>
+</div>

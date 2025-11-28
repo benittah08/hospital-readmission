@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - MedRevisit</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <!-- Ionicons (left content only) -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <ion-icon name="medkit-outline" class="logo-icon"></ion-icon>
+                <h1>MedRevisit</h1>
+            </div>
+
+           <nav class="navbar">
+            <ul class="nav-links">
+             <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+             <li><a href="{% url 'login' %}" class="nav-link">Login</a></li>
+            </ul>
+          </nav>
+
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN SECTION -->
+    <section class="auth-hero">
+        <div class="container">
+            <div class="auth-container">
+
+                <!-- LEFT SIDE -->
+                <div class="auth-content">
+                    <h2>Join Our Healthcare Network</h2>
+                    <p>Become part of the solution to reduce hospital readmissions</p>
+
+                    <ul class="auth-features">
+                        <li>
+                            <ion-icon name="shield-checkmark-outline"></ion-icon>
+                            HIPAA compliant platform
+                        </li>
+                        <li>
+                            <ion-icon name="rocket-outline"></ion-icon>
+                            Real-time patient monitoring
+                        </li>
+                        <li>
+                            <ion-icon name="trending-up-outline"></ion-icon>
+                            Predictive analytics
+                        </li>
+                        <li>
+                            <ion-icon name="team-outline"></ion-icon>
+                            Collaborative care tools
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- RIGHT FORM -->
+                <div class="auth-card">
+
+                    <div class="auth-header">
+                        <h2>Create Account</h2>
+                        <p>Register as clinical staff member</p>
+                    </div>
+
+                    <form class="auth-form" id="registerForm" method="POST" action="{% url 'register' %}">
+                        {% csrf_token %}
+
+                            <!-- First Name -->
+                       <div class="form-group">
+                         <label for="firstName">First Name *</label>
+                        <div class="input-with-icon">
+                       <input type="text" id="firstName" name="first_name" pattern="[A-Za-z]+" title="Letters only" required>
+                    </div>
+                   </div>
+                        <!-- Last Name -->
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <div class="input-with-icon">
+                                <input type="text" id="lastName" name="last_name" pattern="[A-Za-z]+" title="Letters only" required>
+                            </div>
+                        </div>  
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <div class="input-with-icon">
+                                <input type="email" id="email" name="email" required autocomplete="email">
+                            </div>
+                        </div>
+
+                        <!-- Username -->
+                        <div class="form-group">
+                            <label for="username">Username *</label>
+                            <div class="input-with-icon">
+                                <input type="text" id="username" name="username" pattern="[A-Za-z0-9]+" title="Letters and numbers only" required autocomplete="username">
+                            </div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group">
+                            <label for="password">Password *</label>
+                            <div class="input-with-icon">
+                                <input type="password" id="password" name="password" required autocomplete="new-password">
+                            </div>
+
+                            <div class="password-strength">
+                                <div class="strength-bar"></div>
+                                <span class="strength-text">Password strength</span>
+                            </div>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password *</label>
+                            <div class="input-with-icon">
+                                <input type="password" id="confirmPassword" name="confirm_password" required autocomplete="new-password">
+                            </div>
+                        </div>
+
+                        <!-- Employee ID -->
+                        <div class="form-group">
+                            <label for="employeeId">Employee ID *</label>
+                            <div class="input-with-icon">
+                                <input type="text" id="employeeId" name="employee_id" pattern="[A-Za-z0-9]+" title="Letters and numbers only" required autocomplete="off">
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-primary btn-full">
+                            Create Clinical Staff Account
+                        </button>
+
+                        <div class="auth-footer">
+                           <p>Already have an account? <a href="{% url 'login' %}">Sign in here</a></p>
+                        </div>
+
+
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!--<script src="{% static 'js/register.js' %}"></script> -->
+
+</body>
+</html>

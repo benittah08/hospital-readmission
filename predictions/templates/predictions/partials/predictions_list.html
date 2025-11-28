@@ -1,0 +1,79 @@
+<!-- predictions/templates/predictions/partials/predictions_list.html -->
+<div class="predictions-content">
+    <!-- Active Model Card -->
+    <div class="card mb-4">
+        <div class="card-header" style="background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); color: white;">
+            <h5 class="mb-0"><ion-icon name="cube-outline"></ion-icon> Active Prediction Model</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Model:</strong> <span id="model-name">Loading...</span></p>
+                    <p><strong>Type:</strong> <span id="model-type">Loading...</span></p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Accuracy:</strong> <span id="model-accuracy">Loading...</span>%</p>
+                    <p><strong>Status:</strong> <span class="badge bg-success">Active</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prediction Statistics -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon total-patients"><ion-icon name="analytics-outline"></ion-icon></div>
+                <div class="stat-info">
+                    <h3 id="total-predictions">0</h3>
+                    <p>Total Predictions</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon high-risk"><ion-icon name="warning-outline"></ion-icon></div>
+                <div class="stat-info">
+                    <h3 id="high-risk-count">0</h3>
+                    <p>High Risk</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon medium-risk"><ion-icon name="alert-circle-outline"></ion-icon></div>
+                <div class="stat-info">
+                    <h3 id="medium-risk-count">0</h3>
+                    <p>Medium Risk</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <div class="stat-icon total-patients"><ion-icon name="checkmark-circle-outline"></ion-icon></div>
+                <div class="stat-info">
+                    <h3 id="low-risk-count">0</h3>
+                    <p>Low Risk</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Predictions Table -->
+    <div class="dashboard-section">
+        <div class="section-header">
+            <h4>Recent Predictions</h4>
+            <button class="btn btn-primary" onclick="runBulkPredictions()">
+                <ion-icon name="play-outline"></ion-icon> Run Bulk Predictions
+            </button>
+        </div>
+        <div id="predictions-table">
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading predictions...</span>
+                </div>
+                <p class="mt-2">Loading prediction data...</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,94 @@
+/* admin-dashboard.css */
+
+/* Force dashboard background */
+body.admin-dashboard {
+    background-color: #e6f0ff; /* light blue */
+}
+
+/* Keep header same as home page */
+body.admin-dashboard .header {
+    background-color: white;
+    color: black;
+}
+
+/* Logo styling */
+body.admin-dashboard .header .logo h1 {
+    color: #1d4ed8; /* blue logo text */
+}
+
+/* Navigation links */
+body.admin-dashboard .header .nav-links .nav-link {
+    color: black;
+    font-weight: bold;
+}
+
+/* Active link */
+body.admin-dashboard .header .nav-links .nav-link.active {
+    color: #1d4ed8;
+}
+
+/* Main container spacing */
+body.admin-dashboard main.container {
+    padding: 2rem 1rem;
+}
+
+/* Dashboard sections */
+.admin-welcome, .admin-add-staff, .admin-staff-list {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Table styling */
+.admin-staff-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.admin-staff-list th, 
+.admin-staff-list td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+/* Button styling override */
+.admin-add-staff .btn-primary {
+    background-color: #1d4ed8;
+    color: white;
+}
+.admin-add-staff .btn-primary:hover {
+    background-color: #2563eb;
+}
+
+/* Input field styling */
+.admin-add-staff input[type="text"],
+.admin-add-staff input[type="email"],
+.admin-add-staff input[type="password"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    outline: none;
+    box-sizing: border-box;
+}
+
+/* Focus effect */
+.admin-add-staff input[type="text"]:focus,
+.admin-add-staff input[type="email"]:focus,
+.admin-add-staff input[type="password"]:focus {
+    border-color: #1d4ed8; /* blue focus */
+    box-shadow: 0 0 5px rgba(29, 78, 216, 0.3);
+}
+
+/* Placeholder styling */
+.admin-add-staff input::placeholder {
+    color: #888;
+    font-style: italic;
+}
